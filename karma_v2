@@ -399,7 +399,7 @@ args(){
 	shodan_bin="shodan"
 	httprobe_bin="httprobe"
 	interlace_bin="interlace"
-	lolcat_bin="lolcat"
+	# lolcat_bin=""
 	jq_bin="jq"
 	anew_bin="anew"
 	python3_bin="python3"
@@ -431,10 +431,11 @@ check_requirements(){
 	if [[ ! $? -eq 0 ]]; then
 		printf "\n[${red}!${end}] ${yellow}Error: Unable to find ${jq_bin}. Make sure it installed OR \n\t - apt install jq -y${end}\n";exit 1
 	fi
-	type -P "${lolcat_bin}" &>/dev/null
-	if [[ ! $? -eq 0 ]]; then
-		printf "\n[${red}!${end}] ${yellow}Error: Unable to find ${lolcat_bin}. Make sure it installed OR \n\t - apt install lolcat -y${end}\n";exit 1
-	fi
+	# Remove lolcat
+	# type -P "${lolcat_bin}" &>/dev/null
+	# if [[ ! $? -eq 0 ]]; then
+	# 	printf "\n[${red}!${end}] ${yellow}Error: Unable to find ${lolcat_bin}. Make sure it installed OR \n\t - apt install lolcat -y${end}\n";exit 1
+	# fi
 	type -P "${anew_bin}" &>/dev/null
 	if [[ ! $? -eq 0 ]]; then
 		printf "\n[${red}!${end}] ${yellow}Error: Unable to find ${anew_bin}. Make sure it installed OR \n\t - GO111MODULE=on go get -u github.com/tomnomnom/anew${end}\n";exit 1
@@ -681,7 +682,7 @@ ip(){
 	api_check
 	dorks > ${BASE_DIR}/dorks.txt
 	printf "${upper}\n  ${greenbg}Shodan Result Count ${end} [ No API Credits Use ] \n${lower}\n"
-	result_count=$(cat "${BASE_DIR}/dorks.txt"|grep -E "ssl_SHA1|SSL_Domain|Org_Domain|Hostname_Domain|SSL_Issuer|SSL_Subject|SSL_Expired|SSL_SubjectCN" | while IFS='::' read a b c;do z=$(shodan count "$c";sleep 2); printf "$a $z\n";done| awk '{if ($NF > 0)print $1 " " $NF }' | sed 's/ /,|,/g' | column -s ',' -t);echo -e "\n$result_count"  | ${lolcat_bin} -a
+	result_count=$(cat "${BASE_DIR}/dorks.txt"|grep -E "ssl_SHA1|SSL_Domain|Org_Domain|Hostname_Domain|SSL_Issuer|SSL_Subject|SSL_Expired|SSL_SubjectCN" | while IFS='::' read a b c;do z=$(shodan count "$c";sleep 2); printf "$a $z\n";done| awk '{if ($NF > 0)print $1 " " $NF }' | sed 's/ /,|,/g' | column -s ',' -t);echo -e "\n$result_count"
 	collect
 	inscope_ip
 	out_of_scope_ip
@@ -691,7 +692,7 @@ asn_scan(){
 	api_check
 	dorks > ${BASE_DIR}/dorks.txt
 	printf "${upper}\n  ${greenbg}Shodan Result Count ${end} [ No API Credits Use ] \n${lower}\n"
-	result_count=$(cat "${BASE_DIR}/dorks.txt"|grep -E "SSL_Domain|Hostname_Domain" | while IFS='::' read a b c;do z=$(shodan count "$c";sleep 2); printf "$a $z\n";done| awk '{if ($NF > 0)print $1 " " $NF }' | sed 's/ /,|,/g' | column -s ',' -t);echo -e "\n$result_count"  | ${lolcat_bin} -a
+	result_count=$(cat "${BASE_DIR}/dorks.txt"|grep -E "SSL_Domain|Hostname_Domain" | while IFS='::' read a b c;do z=$(shodan count "$c";sleep 2); printf "$a $z\n";done| awk '{if ($NF > 0)print $1 " " $NF }' | sed 's/ /,|,/g' | column -s ',' -t);echo -e "\n$result_count"
 	collect
 	asn
  }
@@ -700,7 +701,7 @@ favicon_scan(){
 	api_check
 	dorks > ${BASE_DIR}/dorks.txt
 	printf "${upper}\n  ${greenbg}Shodan Result Count ${end} [ No API Credits Used ] \n${lower}\n"
-	result_count=$(cat "${BASE_DIR}/dorks.txt"|grep -E "SSL_Domain|Org_Domain|Hostname_Domain|SSL_Issuer|SSL_Subject|SSL_Expired|SSL_SubjectCN" | while IFS='::' read a b c;do z=$(shodan count "$c";sleep 2); printf "$a $z\n";done| awk '{if ($NF > 0)print $1 " " $NF }' | sed 's/ /,|,/g' | column -s ',' -t);echo -e "\n$result_count"  | ${lolcat_bin} -a
+	result_count=$(cat "${BASE_DIR}/dorks.txt"|grep -E "SSL_Domain|Org_Domain|Hostname_Domain|SSL_Issuer|SSL_Subject|SSL_Expired|SSL_SubjectCN" | while IFS='::' read a b c;do z=$(shodan count "$c";sleep 2); printf "$a $z\n";done| awk '{if ($NF > 0)print $1 " " $NF }' | sed 's/ /,|,/g' | column -s ',' -t);echo -e "\n$result_count"
 	collect
 	favicons
 	favicons_hash
@@ -711,7 +712,7 @@ cve(){
 	api_check
 	dorks > ${BASE_DIR}/dorks.txt
 	printf "${upper}\n  ${greenbg}Shodan Result Count ${end} [ No API Credits Use ] \n${lower}\n"
-	result_count=$(cat "${BASE_DIR}/dorks.txt"|grep -E "ssl_SHA1|SSL_Domain|Org_Domain|Hostname_Domain|SSL_Issuer|SSL_Subject|SSL_Expired|SSL_SubjectCN" | while IFS='::' read a b c;do z=$(shodan count "$c";sleep 2); printf "$a $z\n";done| awk '{if ($NF > 0)print $1 " " $NF }' | sed 's/ /,|,/g' | column -s ',' -t);echo -e "\n$result_count"  | ${lolcat_bin} -a
+	result_count=$(cat "${BASE_DIR}/dorks.txt"|grep -E "ssl_SHA1|SSL_Domain|Org_Domain|Hostname_Domain|SSL_Issuer|SSL_Subject|SSL_Expired|SSL_SubjectCN" | while IFS='::' read a b c;do z=$(shodan count "$c";sleep 2); printf "$a $z\n";done| awk '{if ($NF > 0)print $1 " " $NF }' | sed 's/ /,|,/g' | column -s ',' -t);echo -e "\n$result_count"
 	collect
 	inscope_ip >/dev/null 2>/dev/null
 	host_scan
@@ -722,7 +723,7 @@ cveid(){
 	api_check
 	printf "${upper}\n  ${greenbg}Shodan Result CVE ID ${end} [  ${cveid} ] \n${lower}\n"
 	printf "CVE_ID::vuln:${cveid} ssl:${target}\n" > ${BASE_DIR}/dorks.txt
-	result_count=$(cat "${BASE_DIR}/dorks.txt" | while IFS='::' read a b c; do z=$(${shodan_bin} count "$c");printf "$a $z\n";done | awk '{if ($NF > 0)print $1 " " $NF }' | sed 's/ /,|,/g' | column -s ',' -t);echo -e "\n$result_count"  | ${lolcat_bin} -a
+	result_count=$(cat "${BASE_DIR}/dorks.txt" | while IFS='::' read a b c; do z=$(${shodan_bin} count "$c");printf "$a $z\n";done | awk '{if ($NF > 0)print $1 " " $NF }' | sed 's/ /,|,/g' | column -s ',' -t);echo -e "\n$result_count"
 	o=$(echo ${result_count}|awk '{print $NF}');if [ -z ${o} ]; then printf "[${red}!${end}] ${yellow}Not vulnerable to ${red}${cveid}${end}\n\n";exit 0;fi
 	collect
 	inscope_ip >/dev/null 2>/dev/null
@@ -740,7 +741,7 @@ leaks(){
 	api_check
 	dorks > ${BASE_DIR}/dorks.txt
 	printf "${upper}\n  ${greenbg}Shodan Result Count ${end} [ No API Credits Use ] \n${lower}\n"
-	result_count=$(cat "${BASE_DIR}/dorks.txt"|grep -Ev "ssl_SHA1|SSL_Domain|Org_Domain|Hostname_Domain|SSL_Issuer|SSL_Subject|SSL_Expired|SSL_SubjectCN" | while IFS='::' read a b c;do z=$(shodan count "$c";sleep 2); printf "$a $z\n";done| awk '{if ($NF > 0)print $1 " " $NF }' | sed 's/ /,|,/g' | column -s ',' -t);echo -e "\n$result_count"  | ${lolcat_bin} -a
+	result_count=$(cat "${BASE_DIR}/dorks.txt"|grep -Ev "ssl_SHA1|SSL_Domain|Org_Domain|Hostname_Domain|SSL_Issuer|SSL_Subject|SSL_Expired|SSL_SubjectCN" | while IFS='::' read a b c;do z=$(shodan count "$c";sleep 2); printf "$a $z\n";done| awk '{if ($NF > 0)print $1 " " $NF }' | sed 's/ /,|,/g' | column -s ',' -t);echo -e "\n$result_count"
 	collect
 	findings
 }
@@ -749,7 +750,7 @@ cnd_ignore_ips(){
 	api_check
 	dorks > ${BASE_DIR}/dorks.txt
 	printf "${upper}\n  ${greenbg}SSL/TLS, Hosts, IPs Ignored any CDN Nodes.${end} [ Akamighost, Cloud(flare||front) ] \n${lower}\n"
-	result_count=$(cat "${BASE_DIR}/dorks.txt"|grep "Ignored-by_CDNs" | while IFS='::' read a b c;do z=$(shodan count "$c";sleep 2); printf "$a $z\n";done| awk '{if ($NF > 0)print $1 " " $NF }' | sed 's/ /,|,/g' | column -s ',' -t);echo -e "\n$result_count"  | ${lolcat_bin} -a
+	result_count=$(cat "${BASE_DIR}/dorks.txt"|grep "Ignored-by_CDNs" | while IFS='::' read a b c;do z=$(shodan count "$c";sleep 2); printf "$a $z\n";done| awk '{if ($NF > 0)print $1 " " $NF }' | sed 's/ /,|,/g' | column -s ',' -t);echo -e "\n$result_count"
 	collect
 	inscope_ip
 	out_of_scope_ip
