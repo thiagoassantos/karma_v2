@@ -625,7 +625,7 @@ asn(){
 # ╰──────────────────────────────╯
 findings(){
 	cd ${BASE_DIR}/output/$folder/Collect/
-	printf "╔════════[ ${red}Ineresting Findings${end} ]═══════════════════════════════════════════════════════════════════════╗\n\n"
+	printf "╔════════[ ${red}Interesting Findings${end} ]═══════════════════════════════════════════════════════════════════════╗\n\n"
  ls -1 | grep -f "/tmp/results" | grep -Ev "ssl_SHA1|Org_Domain|SSL_Domain|SSL_Expired|SSL_Issuer|SSL_SubjectCN|SSL_Subject|Host_Domain" |
  while read -r line;do printf "├─${bluebg}${line}${end}\n";zcat ${line} | jq -r 'select(.ip_str != null)|.ip_str + ":" + "\(select(.port != null)|.port)"'|awk 'NR%2{printf "%s ",$0;next;}1'|sed 's/ /,|,/g'|column -s"," -t|while read -r leaks;do printf "$( [[ ! -z ${leaks} ]] && printf "\t\t${green}╰─${end} ${leaks}\n" || printf "${yellow}No results found"${end})\n";done;done
 }
